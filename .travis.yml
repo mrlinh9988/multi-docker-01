@@ -1,0 +1,30 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t  mrlinhdeptrai9988/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true mrlinhdeptrai9988/react-test npm run test -- --coverage
+
+after_success:
+  - docker build -t mrlinhdeptrai9988/multi-client ./client
+  - docker build -t mrlinhdeptrai9988/multi-nginx ./nginx
+  - docker build -t mrlinhdeptrai9988/multi-worker ./worker
+  - docker build -t mrlinhdeptrai9988/multi-server ./server
+  
+  # Login to the docker CLI
+  # $DOCKER_PASSWORD, $DOCKER_ID defined on TravisCI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin 
+  # Link tham khảo: https://docs.docker.com/engine/reference/commandline/login/
+
+  # Push to docker hub
+  - docker push mrlinhdeptrai9988/multi-client
+  - docker push mrlinhdeptrai9988/multi-nginx
+  - docker push mrlinhdeptrai9988/multi-server
+  - docker push mrlinhdeptrai9988/multi-worker
+
+
+  
