@@ -21,7 +21,7 @@ after_success:
   # Link tham khảo: https://docs.docker.com/engine/reference/commandline/login/
 
   # Push to docker hub
-  - docker push mrlinhdeptrai9988/multi-client
+  - docker push mrlinhdeptrai9988/multi-client 
   - docker push mrlinhdeptrai9988/multi-nginx
   - docker push mrlinhdeptrai9988/multi-server
   - docker push mrlinhdeptrai9988/multi-worker
